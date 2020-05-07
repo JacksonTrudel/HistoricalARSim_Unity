@@ -1,0 +1,2 @@
+Day#Hour#Message#Current Cash#Net Change#Revenue#Delivery Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Upcoming Deliveries
+1#16:45#Ordered standard delivery for 25 bananas: Error: Max of 1600 of product allowed in back. With 0 items currently being delivered, you can order up to 0 more.#10,292.00#292.00#612.00#0.00#320#201#1200#481##0

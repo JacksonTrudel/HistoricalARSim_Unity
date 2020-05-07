@@ -1,0 +1,4 @@
+Day#Hour#Message#Current Cash#Net Change#Revenue#Delivery Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Upcoming Deliveries
+1#12:55#Restocking apples: Success#10,849.00#849.00#1,009.00#0.00#160#65#645#1320##0
+1#20:01#End of day 1#10,691.00#691.00#1,211.00#0.00#520#0#569#1804#43 @ $10.45#0
+

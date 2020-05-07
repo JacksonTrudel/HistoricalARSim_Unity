@@ -1,0 +1,2 @@
+Day#Hour#Message#Current Cash#Net Change#Revenue#Delivery Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Upcoming Deliveries
+1#10:08#Restocking cereal: Success#9,954.00#-46.00#34.00#0.00#80#156#1199#64##0

@@ -1,0 +1,12 @@
+Day,Hour,Message
+1,10:27,Ordered standard delivery for 25 cereal: Success
+Day,Hour,Message
+1,20:01,End of day 1
+,,,EOD Report
+,,,Current Cash,Net Change,Delivery Expense,Employee Expense,FOH,BOH,Items Sold,Items Expired
+9040.596,959.4043,112.50,1040,104,604,195,0
+Day,Hour,Message
+2,20:01,End of day 2
+,,,EOD Report
+,,,Current Cash,Net Change,Delivery Expense,Employee Expense,FOH,BOH,Items Sold,Items Expired
+8903.371,137.2246,0,160,65,585,23,0

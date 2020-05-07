@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="register" size="100.000000 97.900002" />
+    <ImageTarget name="Jproduce" size="100.000000 77.934784" />
+    <ImageTarget name="produce" size="100.000000 67.666664" />
+    <ImageTarget name="frozen" size="100.000000 57.777779" />
+    <ImageTarget name="dry" size="100.000000 100.000000" />
+    <ImageTarget name="dairy" size="100.000000 100.000000" />
+  </Tracking>
+</QCARConfig>

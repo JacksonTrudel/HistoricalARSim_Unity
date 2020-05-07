@@ -1,0 +1,6 @@
+Day,Hour,Message
+1,11:56,Calling in 2 employee(s) to dry goods: Success
+Day,Hour,Message
+1,12:20,Calling in 2 employee(s) to frozen: Success
+Day,Hour,Message
+1,20:01,End of day 1

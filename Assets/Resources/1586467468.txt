@@ -1,0 +1,2 @@
+Day,Hour,Message,Current Cash,Net Change,Delivery Expense,Employee Expense,FOH,BOH,Items Sold,Items Expired,Upcoming Deliveries
+1,9:19,Restocking apples: Success

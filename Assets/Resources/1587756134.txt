@@ -1,0 +1,3 @@
+Day#Hour#Message#Current Cash#Net Change#Revenue#Delivery Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Upcoming Deliveries
+1#10:32#Restocking cookies: Success#10,013.00#13.00#93.00#0.00#80#325#1199#64##0
+1#14:59#Restocking dessert: Success#10,040.00#40.00#280.00#0.00#240#75#1190#192##0
