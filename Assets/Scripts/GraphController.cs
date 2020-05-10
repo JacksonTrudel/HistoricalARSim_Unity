@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class GraphController : MonoBehaviour
 {
+    /*
     public PieChart Apple_pie;
     public PieChart Banana_pie;
     public PieChart Cereal_pie;
@@ -170,5 +171,5 @@ public class GraphController : MonoBehaviour
         DairyHeaderText.text = "Dairy Department\n Employees working: " + Sim.numEmployees["Dairy"];
 
     }
-
+    */
 }

@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PostDayResultsHistorical.unity
     guid: e1407c3955711e543a8a7018ba5f6152
+  - enabled: 1
+    path: Assets/Scenes/End.unity
+    guid: 2b2654f615336694a9180f65ffa911c2
   m_configObjects: {}

@@ -1,1 +1,0 @@
-Day#Hour#Message#Current Cash#Net Change#Revenue#Delivery Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Upcoming Deliveries

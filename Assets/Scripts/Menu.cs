@@ -12,17 +12,16 @@ using UnityEngine.SceneManagement;
 using System.CodeDom;
 
 public class Menu : MonoBehaviour
-{
-    private SimController Sim;
+{ 
     private int CurrentPage;
     ShowErrorMessage Error;
 
     private ArrayList Shifts;
     private ArrayList Deliveries;
-    private GameObject PlusButton;
-    private GameObject MinusButton;
+    private GameObject [] PlusButton;
+    private GameObject [] MinusButton;
     private TextMeshProUGUI CostLabel;
-    private decimal deliveryCost;
+    private decimal DeliveryCost;
 
     private GameObject Page1;
     private GameObject Page2;
@@ -40,8 +39,6 @@ public class Menu : MonoBehaviour
     public void ReferenceSheet()
     {
 
-        Sim = GameObject.Find("Simulation").GetComponent<SimController>();
-
         if (GameObject.Find("Reference Sheet Canvas") != null)
             GameObject.Find("Reference Sheet Canvas").SetActive(false);
         else
@@ -50,19 +47,30 @@ public class Menu : MonoBehaviour
 
     public void MakeDecisions(GameObject nextLayer)
     {
-        GameObject.Find("Options").SetActive(false);
+        GameObject.Find("Options").SetActive(false); 
         nextLayer.SetActive(true);
+
+        if (SimController.DayNum == 1)
+        {
+            GameObject.Find("PrevReport Button").SetActive(false);
+        }
         CurrentPage = 1;
         SetButtons();
         // save reference to one (useful for SubmitDecisions())
         Page1 = GameObject.Find("Page 1");
+
+ 
     }
 
     // This could probably be done a better way, but I got this working quickly
     public void disableOne(GameObject nextPage)
     {
-        MinusButton.SetActive(true);
-        PlusButton.SetActive(true);
+        // first enable all buttons
+        for (int i = 0; i <= 4; i++)
+        {
+            MinusButton[i].SetActive(true);
+            PlusButton[i].SetActive(true);
+        }
         Page1.SetActive(false);
         nextPage.SetActive(true);
 
@@ -78,8 +86,12 @@ public class Menu : MonoBehaviour
 
     public void disableTwo(GameObject nextPage)
     {
-        MinusButton.SetActive(true);
-        PlusButton.SetActive(true);
+        // first enable all buttons
+        for (int i = 0; i <= 4; i++)
+        {
+            MinusButton[i].SetActive(true);
+            PlusButton[i].SetActive(true);
+        }
         Page2.SetActive(false);
         nextPage.SetActive(true);
 
@@ -99,8 +111,12 @@ public class Menu : MonoBehaviour
 
     public void disableThree(GameObject nextPage)
     {
-        MinusButton.SetActive(true);
-        PlusButton.SetActive(true);
+        // first enable all buttons
+        for (int i = 0; i <= 4; i++)
+        {
+            MinusButton[i].SetActive(true);
+            PlusButton[i].SetActive(true);
+        }
         Page3.SetActive(false);
         nextPage.SetActive(true);
 
@@ -115,7 +131,7 @@ public class Menu : MonoBehaviour
             Page4 = nextPage;
             CurrentPage = 4;
             CostLabel = GameObject.Find("Cost Label").GetComponent<TextMeshProUGUI>();
-            CostLabel.text = "Cost: $" + deliveryCost;
+            CostLabel.text = "Cost: $" + DeliveryCost;
         }
     }
 
@@ -135,7 +151,7 @@ public class Menu : MonoBehaviour
             Page5 = nextPage;
             CurrentPage = 5;
             CostLabel = GameObject.Find("Cost Label").GetComponent<TextMeshProUGUI>();
-            CostLabel.text = "Cost: $" + deliveryCost;
+            CostLabel.text = "Cost: $" + DeliveryCost;
 
 
         }
@@ -147,7 +163,7 @@ public class Menu : MonoBehaviour
         nextPage.SetActive(true);
         CurrentPage = 4;
         CostLabel = GameObject.Find("Cost Label").GetComponent<TextMeshProUGUI>();
-        CostLabel.text = "Cost: $" + deliveryCost;
+        CostLabel.text = "Cost: $" + DeliveryCost;
     }
 
     
@@ -177,7 +193,7 @@ public class Menu : MonoBehaviour
                         CurrentPage = 2;
                         SetButtons();
                         break;
-                    case 3:
+                    case 2:
                         Page3.SetActive(true);
                         CurrentPage = 3;
                         SetButtons();
@@ -191,82 +207,192 @@ public class Menu : MonoBehaviour
                        
         }
 
+        SimController.Day.SetShifts(Shifts);
+        // reset shifts arraylist. Precaution, shouldn't be necessary in final treatment
+        Shifts = new ArrayList();
+        for (int i = 0; i < 3; i++)
+        {
+            Shifts.Add(new Store.ShiftInfo());
+        }
+
+        SimController.Day.SetDeliveries(Deliveries, DeliveryCost);
+        Deliveries = new ArrayList();
+
+        SimController.Day.RunDay();
     }
 
     // handles the Register Panel (adding Registers)
     public void increment(GameObject quantText)
     {
+        string[] buttonName = quantText.name.Split(' ');
+        bool isRegText = (buttonName[2] == "Reg");
+        int buttonIdx;
+        switch (buttonName[2])
+        {
+            case "Produce":
+                buttonIdx = 0;
+                break;
+            case "Dairy":
+                buttonIdx = 1;
+                break;
+            case "Dry":
+                buttonIdx = 2;
+                break;
+            case "Frozen":
+                buttonIdx = 3;
+                break;
+            default:
+                buttonIdx = 4;
+                break;
+        }
+
         TextMeshProUGUI textComponent = quantText.GetComponent<TextMeshProUGUI>();
         int val = int.Parse(textComponent.text);
-        if (val < 3)
-            val++;
+        val++;
+        if (isRegText)
+        {
+            //  if there was only one employee, activate the decrement button now that they have two
+            if (val == 2)
+            {
+                MinusButton[4].SetActive(true);
+            }
+            // disable the plus button, they can not have any more
+            else if (val == 3)
+            {
+                PlusButton[4].SetActive(false);
+            }
+        }
+        else
+        {
+            if (val == 1)
+            {
+                MinusButton[buttonIdx].SetActive(true);
+            }
+            else if (val == 5)
+            {
+                PlusButton[buttonIdx].SetActive(false);
+            }
+        }
 
-        //  if there was only one employee, activate the decrement button now that they have two
-        if (val == 2)
-        {
-            MinusButton.SetActive(true);
-        }
-        // disable the plus button, they can not have any more
-        else if (val == 3)
-        {
-            PlusButton.SetActive(false);
-        }
-        ((Store.ShiftInfo) Shifts[CurrentPage - 1]).addEmployee("Registers");
+        ((Store.ShiftInfo)Shifts[CurrentPage - 1]).addEmployee(Store.DepartmentNames[buttonIdx]);
         textComponent.text = val.ToString();
     }
 
     // handles the Register Panel (removing Registers)
     public void decrement(GameObject quantText)
     {
+        string[] buttonName = quantText.name.Split(' ');
+        bool isRegText = (buttonName[2] == "Reg");
+        int buttonIdx;
+        switch (buttonName[2])
+        {
+            case "Produce":
+                buttonIdx = 0;
+                break;
+            case "Dairy":
+                buttonIdx = 1;
+                break;
+            case "Dry":
+                buttonIdx = 2;
+                break;
+            case "Frozen":
+                buttonIdx = 3;
+                break;
+            default:
+                buttonIdx = 4;
+                break;
+        }
+
         TextMeshProUGUI textComponent = quantText.GetComponent<TextMeshProUGUI>();
         int val = int.Parse(textComponent.text);
-        if (val > 1)
-            val--;
+        val--;
 
-        //  if there is only one left, de-activate the decrement button 
-        if (val == 1)
+        if (isRegText)
         {
-            MinusButton.SetActive(false);
+           
+            //  if there was only one employee, activate the decrement button now that they have two
+            if (val == 1)
+            {
+                MinusButton[4].SetActive(false);
+            }
+            // disable the plus button, they can not have any more
+            else if (val == 2)
+            {
+                PlusButton[4].SetActive(true);
+            }
         }
-        // enable the plus button,if they had three and now have two
-        else if (val == 2)
-        {
-            PlusButton.SetActive(true);
-        }
-
-        ((Store.ShiftInfo)Shifts[CurrentPage - 1]).removeEmployee("Registers");
-        textComponent.text = val.ToString();
-    }
-
-    public void ToggleEvent(string dept)
-    {
-        GameObject toggleSource = GameObject.Find(dept + " " + "Toggle " + CurrentPage);
-        if ( toggleSource.GetComponent<Toggle>().isOn)
-            ((Store.ShiftInfo)Shifts[CurrentPage - 1]).addEmployee(dept);
         else
-            ((Store.ShiftInfo)Shifts[CurrentPage - 1]).removeEmployee(dept);
+        {
+            
+            if (val == 0)
+            {
+                MinusButton[buttonIdx].SetActive(false);
+            }
+            else if (val == 4)
+            {
+                PlusButton[buttonIdx].SetActive(true);
+            }
 
-        UnityEngine.Debug.Log("Num in " + dept + ": " + ((Store.ShiftInfo)Shifts[CurrentPage - 1]).Employees[dept]);
+            
+        }
+
+        ((Store.ShiftInfo)Shifts[CurrentPage - 1]).removeEmployee(Store.DepartmentNames[buttonIdx]);
+        textComponent.text = val.ToString();
     }
 
     private void SetButtons()
     {
         //UnityEngine.Debug.Log("CurrentPage: " + CurrentPage);
-        MinusButton = GameObject.Find("Minus Button " + CurrentPage);
-        PlusButton = GameObject.Find("Plus Button " + CurrentPage);
+        MinusButton[0] = GameObject.Find("Produce Minus Button " + CurrentPage);
+        PlusButton[0] = GameObject.Find("Produce Plus Button " + CurrentPage);
+        MinusButton[1] = GameObject.Find("Dairy Minus Button " + CurrentPage);
+        PlusButton[1] = GameObject.Find("Dairy Plus Button " + CurrentPage);
+        MinusButton[2] = GameObject.Find("Dry Minus Button " + CurrentPage);
+        PlusButton[2] = GameObject.Find("Dry Plus Button " + CurrentPage);
+        MinusButton[3] = GameObject.Find("Frozen Minus Button " + CurrentPage);
+        PlusButton[3] = GameObject.Find("Frozen Plus Button " + CurrentPage);
+        MinusButton[4] = GameObject.Find("Reg Minus Button " + CurrentPage);
+        PlusButton[4] = GameObject.Find("Reg Plus Button " + CurrentPage);
 
         UnityEngine.Debug.Log(GameObject.Find("Minus Button " + CurrentPage));
+        
+        // de-activate minus and plus buttons where necessary
+        Dictionary<string, int>.ValueCollection empPerDept = ((Store.ShiftInfo)Shifts[CurrentPage - 1]).Employees.Values;
+        int idx = 0;
+        foreach (int val in empPerDept)
+        {
+            UnityEngine.Debug.Log(MinusButton[idx].name);
+            if (val == 0)
+            {
+                MinusButton[idx].SetActive(false);
+            }
+            else if (val == 5)
+            {
+                PlusButton[idx].SetActive(false);
+            }
+            idx++;
 
+            // register case handled below
+            if (idx == 4)
+                break;
+        }
+        UnityEngine.Debug.Log("Current Page: " + CurrentPage);
         if (((Store.ShiftInfo)Shifts[CurrentPage - 1]).Employees["Registers"] == 1)
-            MinusButton.SetActive(false);
+        {
+            MinusButton[4].SetActive(false);
+            UnityEngine.Debug.Log("Minus button deactivated");
+        }
         else if (((Store.ShiftInfo)Shifts[CurrentPage - 1]).Employees["Registers"] == 3)
-            PlusButton.SetActive(false);
+        {
+            PlusButton[4].SetActive(false);
+            UnityEngine.Debug.Log("Plus button deactivated");
+        }
     }
    
     public void QuantityValueChanged(TMP_InputField source)
     {
-
-        UnityEngine.Debug.Log("The source text: " + source.text);
+        int garbVar;
+        //UnityEngine.Debug.Log("The source text: " + source.text + " matches? " + int.TryParse(source.text, out a));
         string[] sourceName = source.name.Split(' ');
         string foodName = sourceName[0];
 
@@ -284,8 +410,8 @@ public class Menu : MonoBehaviour
                 if (d.foodItem.Name == foodName)
                 {
                     decimal canceledCost = d.Cost;
-                    deliveryCost -= canceledCost;
-                    CostLabel.text = "Cost: $" + deliveryCost;
+                    DeliveryCost -= canceledCost;
+                    CostLabel.text = "Cost: $" + DeliveryCost;
                     Deliveries.RemoveAt(i);
                     loopFlag = true;
                     togStd.isOn = false;
@@ -295,7 +421,7 @@ public class Menu : MonoBehaviour
                 }
             }
         }
-        else if (!regex.IsMatch(source.text) || int.Parse(source.text) > MaxBatches)
+        else if (!int.TryParse(source.text, out garbVar))
         {
             Error.Show("Enter a number of batches (MAX: " + MaxBatches + ")");
             
@@ -338,36 +464,36 @@ public class Menu : MonoBehaviour
                     found = true;
                     int origQuant = d.Quantity / BatchSize;
                     int desiredQuant = int.Parse(source.text);
-                    deliveryCost += d.SetQuantity(BatchSize * desiredQuant);
+                    DeliveryCost += d.SetQuantity(BatchSize * desiredQuant);
                     // verify they can afford this order
-                    if (deliveryCost > Sim.Day.Cash)
+                    if (DeliveryCost > SimController.Day.Cash)
                     {
-                        decimal missing = deliveryCost - Sim.Day.Cash;
+                        decimal missing = DeliveryCost - SimController.Day.Cash;
                         Error.Show("You are " + missing.ToString("C2") + " short of editing this order");
                         UnityEngine.Debug.Log("Before");
                         source.text = origQuant.ToString();
                         
-                        deliveryCost += d.SetQuantity(BatchSize * origQuant);
+                        DeliveryCost += d.SetQuantity(BatchSize * origQuant);
                     }
                     
-                    CostLabel.text = "Cost: $" + deliveryCost;
+                    CostLabel.text = "Cost: $" + DeliveryCost;
                     return;
                 }
             }
 
             if (!found)
             {
-                Delivery newDel = new Delivery(Sim.Day.GetFoodItem(foodName), BatchSize * int.Parse(source.text), false);
+                Delivery newDel = new Delivery(SimController.Day.GetFoodItem(foodName), BatchSize * int.Parse(source.text));
 
                 // validate input
-                if (newDel.Cost + deliveryCost <= Sim.Day.Cash)
+                if (newDel.Cost + DeliveryCost <= SimController.Day.Cash)
                 {
                     Deliveries.Add(newDel);
-                    deliveryCost += newDel.Cost;
+                    DeliveryCost += newDel.Cost;
                 }
                 else
                 {
-                    decimal missing = (newDel.Cost + deliveryCost) - Sim.Day.Cash;
+                    decimal missing = (newDel.Cost + DeliveryCost) - SimController.Day.Cash;
                     Error.Show("You are " + missing.ToString("C2") + " short of placing this delivery");
                     source.text = "";
                     loopFlag = true;
@@ -377,7 +503,7 @@ public class Menu : MonoBehaviour
                 }
 
 
-                CostLabel.text = "Cost: $" + deliveryCost;
+                CostLabel.text = "Cost: $" + DeliveryCost;
                 togStd.isOn = true;
             }
 
@@ -422,9 +548,9 @@ public class Menu : MonoBehaviour
                 decimal addedCost = d.SetExpedited(true);
 
                 // verify they can afford to set this delivery as expedited
-                if (deliveryCost + addedCost > Sim.Day.Cash)
+                if (DeliveryCost + addedCost > SimController.Day.Cash)
                 {
-                    decimal missing = (deliveryCost + addedCost) - Sim.Day.Cash;
+                    decimal missing = (DeliveryCost + addedCost) - SimController.Day.Cash;
                     Error.Show("You are " + missing.ToString("C2") + " short of making this delivery expedited");
                     togStd.isOn = true;
                     togExp.isOn = false;
@@ -434,10 +560,10 @@ public class Menu : MonoBehaviour
                 {
                     togStd.isOn = false;
                     togExp.isOn = true;
-                    deliveryCost += addedCost;
+                    DeliveryCost += addedCost;
                 }
 
-                CostLabel.text = "Cost: $" + deliveryCost;
+                CostLabel.text = "Cost: $" + DeliveryCost;
                 loopFlag = false;
                 return;
             }
@@ -477,12 +603,24 @@ public class Menu : MonoBehaviour
             if (d.foodItem.Name == foodName)
             {
                 decimal savings = d.SetExpedited(false);
-                deliveryCost += savings;
-                CostLabel.text = "Cost: $" + deliveryCost;
+                DeliveryCost += savings;
+                CostLabel.text = "Cost: $" + DeliveryCost;
                 loopFlag = false;
                 return;
             }
         }
+    }
+
+    public void ShowPrevEOD(GameObject PrevEODReportPanel)
+    {
+        PrevEODReportPanel.SetActive(true);
+        Text status_text = GameObject.Find("Status Text").GetComponent<Text>();
+        status_text.text = PostDayController.LastReport;
+    }
+
+    public void ReturnFromPrevEOD(GameObject PrevEODReportPanel)
+    {
+        PrevEODReportPanel.SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -490,9 +628,11 @@ public class Menu : MonoBehaviour
     {
         Shifts = new ArrayList();
         Deliveries = new ArrayList();
-        Sim = GameObject.Find("Simulation").GetComponent<SimController>();
+        //Sim = GameObject.Find("SimController").GetComponent<SimController>();
         Error = GameObject.Find("ErrorMessage").GetComponent<ShowErrorMessage>();
-        deliveryCost = 0.00m;
+        DeliveryCost = 0.00m;
+        MinusButton = new GameObject[5];
+        PlusButton = new GameObject[5];
 
         for (int i = 0; i < 3; i++)
         {

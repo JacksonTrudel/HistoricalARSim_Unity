@@ -12,6 +12,7 @@ public class FoodItem : MonoBehaviour
     public int MaxBOH { get; set; }
     public int StockFOH { get; set; }
     public int StockBOH { get; set; }
+    public int AtRegisters { get; set; }
 
     public FoodItem(int department, string name, decimal unitPriceCustomer, decimal unitPriceFarmer, int maxFOH, 
                         int maxBOH, int stockFOH, int stockBOH)
@@ -24,6 +25,7 @@ public class FoodItem : MonoBehaviour
         MaxBOH = maxBOH;
         StockFOH = stockFOH;
         StockBOH = stockBOH;
+        AtRegisters = 0;
     }
 
     public FoodItem(FoodItem food)
@@ -36,7 +38,9 @@ public class FoodItem : MonoBehaviour
         this.MaxFOH = food.MaxFOH;
         this.StockBOH = food.StockBOH;
         this.StockFOH = food.StockFOH;
+        this.AtRegisters = food.AtRegisters;
     }
+
     // Start is called before the first frame update
     void Start()
     {

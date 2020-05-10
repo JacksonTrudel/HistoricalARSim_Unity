@@ -1,0 +1,2 @@
+Day Number#Starting Cash#End Cash#Net Change#Revenue#Deliveries Ordered#Delivery Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Upcoming Deliveries
+1#10000.00#9680.00#320#$625.00#4#$427.50#$90.00#0#0#197#221#4

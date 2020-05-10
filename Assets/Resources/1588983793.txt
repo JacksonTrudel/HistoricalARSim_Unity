@@ -1,0 +1,2 @@
+DAY 1 Summary
+Day Number#Starting Cash#End Cash#Net Change#Revenue#Num Deliveries#Delivery Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Upcoming Deliveries
