@@ -30,6 +30,7 @@ public class Store : MonoBehaviour
     public const int MAX_FOODS_PER_CHECKOUT = 3;
     // this should match RegisterRate in Simulation
     public const int REGISTER_CHECKOUT_RATE = 8;
+    public const int MAX_EMPLOYEES = 8;
 
     // data for PostDayManager
     public decimal DailyRevenue;

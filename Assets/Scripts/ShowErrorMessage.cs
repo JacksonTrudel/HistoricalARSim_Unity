@@ -15,8 +15,6 @@ public class ShowErrorMessage : MonoBehaviour
     public void Show(string message)
     {
         StartCoroutine(DisplayError(message, 5));
-        
-
     }
 
     IEnumerator DisplayError(string message, float delay) {
