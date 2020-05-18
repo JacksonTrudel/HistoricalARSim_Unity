@@ -15,13 +15,13 @@ public class PostDayController : MonoBehaviour
     public static string LastReport;
     public static int TotalFOH;
     public static int TotalBOH;
-
+    public static bool SimOver;
     // Start is called before the first frame update
     void Start()
     {
-        // Prepare strings and values that will be concatenated to the PostDayResult text
-        string cash_value_neg_or_pos, net_change_string;
+        SimOver = false;
 
+        string cash_value_neg_or_pos;
         if (SimController.Day.Cash < 0)
         {
             cash_value_neg_or_pos = "-$" + string.Format("{0:n}", Mathf.Abs((float)SimController.Day.Cash));
@@ -31,9 +31,9 @@ public class PostDayController : MonoBehaviour
             cash_value_neg_or_pos = "$" + string.Format("{0:n}", SimController.Day.Cash);
         }
 
-        // calculate change in cash value
         float net_change = (float)(SimController.Day.Cash - SimController.Day.StartOfDayCash);
-        
+        string net_change_string;
+
         if (net_change < 0)
         {
             net_change_string = "-$" + string.Format("{0:n}", Mathf.Abs(net_change));
@@ -58,7 +58,6 @@ public class PostDayController : MonoBehaviour
             TotalBOH += ((FoodItem)SimController.Day.Stock[i]).StockBOH;
         }
 
-        // Constructs the body of the report
         status_text.text = ("You completed Day " + (SimController.DayNum));
         status_text.text += ("@@You have " + cash_value_neg_or_pos);
         status_text.text += ("@(Net change: " + net_change_string + ")@Total Front of House Stock: ");
@@ -76,10 +75,7 @@ public class PostDayController : MonoBehaviour
 
         status_text.text = status_text.text.Replace("@", System.Environment.NewLine);
 
-        // stores the report to be referenced on the following day
         LastReport = status_text.text;
-
-        // calls static method which logs the day's information
         LogManager.LogDay();
 
         if (SimController.DayNum != 7)
@@ -90,8 +86,16 @@ public class PostDayController : MonoBehaviour
 
         else
         {
+            SimOver = true;
             continue_button_text.text = ("End Game");
         }
+
+    }
+
+
+    // Update is called once per frame
+    void Update()
+    {
 
     }
 }
