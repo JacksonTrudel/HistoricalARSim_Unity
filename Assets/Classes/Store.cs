@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Store : MonoBehaviour
 {
-    public int StoreDay { get; set; }
     public decimal Cash { get; set; }
     public int DayHours { get; set; }
     public int HourlyPay { get; set; } // different from (no AR historical)
@@ -52,7 +51,6 @@ public class Store : MonoBehaviour
 
     public Store()
     {
-        StoreDay = 1;
         Cash = 10000.00m;
         DayHours = 12;
         HourlyPay = 10;
@@ -67,7 +65,6 @@ public class Store : MonoBehaviour
 
     public Store(Store other)
     {
-        this.StoreDay = other.StoreDay;
         this.Cash = other.Cash;
         this.DayHours = other.DayHours;
         this.HourlyPay = other.HourlyPay;
