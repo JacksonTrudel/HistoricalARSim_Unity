@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "876956900400",
+    "firebase_url": "https://historical-ar-simulation.firebaseio.com",
+    "project_id": "historical-ar-simulation",
+    "storage_bucket": "historical-ar-simulation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:876956900400:android:56763fba4e1aa6c88c61f5",
+        "android_client_info": {
+          "package_name": "com.UCF.HistoricalARSim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "876956900400-pr0ssnj3adang7g5bq4ftjuhiijvb5hd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbufnmxNVbToAsTMascF1fi09hZ2nLcjg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "876956900400-pr0ssnj3adang7g5bq4ftjuhiijvb5hd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
