@@ -15,9 +15,12 @@ public class Menu : MonoBehaviour
 { 
     private int CurrentPage;
     ShowErrorMessage Error;
-
+    
+    // Values to be passed to Store script once decisions are completed
     private ArrayList Shifts;
     private ArrayList Deliveries;
+
+    // Array of plus and minus buttons (size = 5), used on pages 1 and 2 of menu
     private GameObject [] PlusButton;
     private GameObject [] MinusButton;
     private TextMeshProUGUI CostLabel;
@@ -30,7 +33,6 @@ public class Menu : MonoBehaviour
     private GameObject Page5;
 
     private static int MaxBatches = 5;
-    private static Regex regex = new Regex("[1-" + MaxBatches + "]");
     private static int BatchSize = 25;
 
     
@@ -246,6 +248,13 @@ public class Menu : MonoBehaviour
                 break;
         }
 
+        // check whether they have exceeded max # employees working each shift
+        if (((Store.ShiftInfo)Shifts[CurrentPage - 1]).TotalEmployees == Store.MAX_EMPLOYEES)
+        {
+            Error.Show("You can have a max of " + Store.MAX_EMPLOYEES + " employees working each shift.");
+            return;
+        }
+
         TextMeshProUGUI textComponent = quantText.GetComponent<TextMeshProUGUI>();
         int val = int.Parse(textComponent.text);
         val++;
@@ -389,6 +398,7 @@ public class Menu : MonoBehaviour
         }
     }
    
+
     public void QuantityValueChanged(TMP_InputField source)
     {
         int garbVar;
@@ -421,9 +431,9 @@ public class Menu : MonoBehaviour
                 }
             }
         }
-        else if (!int.TryParse(source.text, out garbVar))
+        else if (!int.TryParse(source.text, out garbVar) || garbVar == 0)
         {
-            Error.Show("Enter a number of batches (MAX: " + MaxBatches + ")");
+            Error.Show("Enter a number of batches (1 - " + MaxBatches + ")");
             
             bool found = false;
             // reset text
