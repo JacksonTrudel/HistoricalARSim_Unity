@@ -45,13 +45,14 @@ public class LogManager : MonoBehaviour
             UnityEngine.Debug.Log("Opening writer 1");
             writer1 = new StreamWriter(FilePaths[0], true);
             //if(SimController.DayNum == 1)
-            writer1.WriteLine("Day Number#Starting Cash#End Cash#Net Change#Revenue#Deliveries Ordered#Delivery Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Upcoming Deliveries");
+            writer1.WriteLine("Day Number#Starting Cash#End Cash#Net Change#Revenue#Deliveries" +
+                " Ordered#Delivery Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Overflow Items#Upcoming Deliveries");
         }
 
         string entry = SimController.DayNum + "#" + SimController.Day.StartOfDayCash + "#" + SimController.Day.Cash + "#";
         entry += net_change_string + "#" + SimController.Day.DailyRevenue.ToString("C2") + "#" + SimController.Day.DeliveriesOrdered + "#" + SimController.Day.DailyDeliveryCost.ToString("C2") + "#";
         entry += SimController.Day.DailyEmployeePayout.ToString("C2") + "#" + PostDayController.TotalFOH + "#" + PostDayController.TotalBOH + "#" + SimController.Day.DailyItemsSold + "#";
-        entry += SimController.Day.TotalExpired + "#" + SimController.Day.Deliveries.Count;
+        entry += SimController.Day.TotalExpired + "#" + SimController.Day.totalOverFlow + "#" + SimController.Day.Deliveries.Count;
         writer1.WriteLine(entry);
 
         if (SimController.DayNum == 1)
@@ -59,7 +60,8 @@ public class LogManager : MonoBehaviour
             UnityEngine.Debug.Log("Opening writer 1");
             writer2 = new StreamWriter(FilePaths[1], true);
             //if(SimController.DayNum == 1)
-            writer2.WriteLine("Day Number#Starting Cash#End Cash#Net Change#Revenue#Deliveries Ordered#Delivery Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Upcoming Deliveries");
+            writer2.WriteLine("Day Number#Starting Cash#End Cash#Net Change#Revenue#Deliveries Ordered#Delivery" +
+                " Expense#Employee Expense#FOH#BOH#Items Sold#Items Expired#Overflow Items#Upcoming Deliveries");
         }
 
         writer2.WriteLine(entry);

@@ -42,6 +42,9 @@ public class Store : MonoBehaviour
     public int TotalExpired;
     public int DeliveriesOrdered;
 
+    // captures the total number of foodItems that are overflow at the END of the day
+    public int totalOverFlow;
+
     // used to calculate RegUT (Register utilization)
     public int CheckoutsPossible;
     public int CheckoutsPerformed;
@@ -302,6 +305,7 @@ public class Store : MonoBehaviour
 
         Cash -= DailyEmployeePayout;
         UnityEngine.Debug.Log("Cash: " + Cash);
+
         // load PostDayReport
         SimController.LoadResults();
     }
@@ -407,21 +411,32 @@ public class Store : MonoBehaviour
     {
         UnityEngine.Debug.Log("Before expiring: " + ((FoodItem)Stock[0]).StockBOH);
         TotalExpired = 0;
+        totalOverFlow = 0;
         foreach (FoodItem food in Stock)
         {
             int numBadFOH, numBadBOH;
             float percentBadFOH = UnityEngine.Random.Range(0.20f, 0.25f);
             float percentBadBOH = UnityEngine.Random.Range(0.05f, 0.10f);
 
-
+            // natural expiries for front of house
             numBadFOH = (int)(percentBadFOH * food.StockFOH);
             food.StockFOH -= numBadFOH;
             TotalExpired += numBadFOH;
+
+            // natural expiries for back of house
             numBadBOH = (int)(percentBadBOH * food.StockBOH);
             food.StockBOH -= numBadBOH;
             TotalExpired += numBadBOH;
+
+            if (food.StockBOH > food.MaxBOH)
+            {
+                UnityEngine.Debug.Log("CHANGING OVERFLOW");
+                totalOverFlow += food.StockBOH - food.MaxBOH;
+                food.StockBOH = food.MaxBOH;
+            }
         }
         UnityEngine.Debug.Log("After expiring: " + ((FoodItem)Stock[0]).StockBOH);
+        UnityEngine.Debug.Log("Total overflow: " + totalOverFlow);
 
     }
 

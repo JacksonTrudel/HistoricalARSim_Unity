@@ -68,6 +68,7 @@ public class PostDayController : MonoBehaviour
         status_text.text += ("Shift 1: " + SimController.Day.ShiftItemsSold[0] + "  Shift 2: " + SimController.Day.ShiftItemsSold[1]);
         status_text.text += (" Shift 3: " + SimController.Day.ShiftItemsSold[2] + "@");
         status_text.text += (SimController.Day.TotalExpired + " foods expired :(@");
+        status_text.text += ("Total Overflow: " + SimController.Day.totalOverFlow + "@");
         status_text.text += (SimController.Day.DailyEmployeePayout.ToString("C2") + " spent on employees@");
         status_text.text += (SimController.Day.DailyDeliveryCost.ToString("C2") + " spent on deliveries@");
         status_text.text += (SimController.Day.Deliveries.Count + " deliveries will arrive tomorrow.@");
