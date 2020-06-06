@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Firebase;
+using Firebase.Analytics;
 using UnityEngine;
 
 public class FireBaseInit : MonoBehaviour
@@ -7,12 +7,8 @@ public class FireBaseInit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(
+            task => FirebaseAnalytics.SetAnalyticsCollectionEnabled(true)
+        );
     }
 }
