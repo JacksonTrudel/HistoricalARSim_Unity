@@ -67,7 +67,7 @@ public class SimController : MonoBehaviour
     // attached to the continue button on the PostDayResults
     public void ContinueFromReport()
     {
-        if (DayNum == 7)
+        if (DayNum == 8)
         {
             SceneManager.LoadScene("End");
         }

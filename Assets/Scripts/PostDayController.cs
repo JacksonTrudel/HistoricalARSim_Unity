@@ -83,16 +83,17 @@ public class PostDayController : MonoBehaviour
         // calls static method which logs the day's information
         LogManager.LogDay();
 
-        if (SimController.DayNum != 7)
+        if (SimController.DayNum != 8)
         {
-            SimController.DayNum++;
-            continue_button_text.text = ("Continue with Day " + (SimController.DayNum));
+            ++SimController.DayNum;
+            continue_button_text.text = SimController.DayNum >= 8 ? ("End Game") 
+                                        : ("Continue with Day " + (SimController.DayNum));
         }
 
-        else
-        {
-            continue_button_text.text = ("End Game");
-        }
+        // else
+        // {
+        //     continue_button_text.text = ("End Game");
+        // }
 
     }
 }

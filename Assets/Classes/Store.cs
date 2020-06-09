@@ -22,6 +22,8 @@ public class Store : MonoBehaviour
     public const int MinEmployeesWorking = 2;
     private decimal DeliveryCost;
 
+    private decimal hoursPerShift = 4;
+
     public static string[] DepartmentNames = new string[] { "Produce", "Dairy", "Dry Goods", "Frozen", "Registers" };
     // IMPORTANT: if Simulation.TimeBetweenCheckouts == 10, numCheckoutsPerHour MUST equal 6 
     //               for checkouts to be balanced
@@ -245,7 +247,7 @@ public class Store : MonoBehaviour
             Store.ShiftInfo shift = (Store.ShiftInfo)Shifts[i];
 
             // pay employees
-            DailyEmployeePayout += (decimal) shift.TotalEmployees * HourlyPay;
+            DailyEmployeePayout += (decimal) shift.TotalEmployees * HourlyPay * hoursPerShift;
             
             // 1. process expedited deliveries --> Expedited deliveries come during shift 2
             if (i == 1)
