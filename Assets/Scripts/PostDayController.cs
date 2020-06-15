@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class PostDayController : MonoBehaviour
 {
-
     public Text status_text;
     public Text continue_button_text;
 

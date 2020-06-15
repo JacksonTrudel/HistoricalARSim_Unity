@@ -7,9 +7,7 @@ public class DontDestroyOnLoad : MonoBehaviour
     public static DontDestroyOnLoad instance = null;
 
     void Awake()
-
     {
-        
             if (instance == null)
             {
                 //set instance to the gameobject we've placed the script on
